@@ -89,14 +89,15 @@ def follow_check(request,pro_id):
 
 
 def view_following_posts(request):
-    following_list=[]
-    post_list=[]
+    my_posts=Post.objects.all().filter(user=None)
     following_list=Follower.objects.all().filter(user=request.user)
     print("following list",following_list)
     for item in following_list:
-        post_list.append(Post.objects.all().filter(user=item.user_follower).order_by('-date'))
-    print('total following posts',post_list)
-    post_list_paginator = retPaginatorList(request,post_list)
+        my_posts|=Post.objects.all().filter(user=item.user_follower)
+
+    my_posts=my_posts.order_by('-date')
+    print('total following posts',my_posts)
+    post_list_paginator = retPaginatorList(request,my_posts)
     return render (request,'network/following_posts.html',{'post_list':post_list_paginator})
 
 

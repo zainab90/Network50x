@@ -1,18 +1,23 @@
           document.addEventListener('DOMContentLoaded',function(){
-                btn_list=document.querySelectorAll('a');
+                btn_list=document.querySelectorAll('button');
                 btn_list.forEach(editPost);
-                edit_list=document.querySelectorAll('button');
+                edit_list=document.querySelectorAll('a');
                 edit_list.forEach(showLike);
 
 
 function showLike(item){
+
    item.onclick=function(){
    like_counts=document.getElementById(item.id+'likes');
    console.log(item.id);
    btn_txt=item.innerText;
-   if (item.id==""){}
+   if (item.id==""){
+   console.log('error');
+   }
    else{
-
+   parent_a=document.getElementById(item.id);
+   child_p=parent_a.getElementsByClassName("testp")[0]
+  console.log('correct');
    fetch(`/likePost/${item.id}`, {
   method: 'PUT',
   body: JSON.stringify({
@@ -27,14 +32,16 @@ fetch(`/likePost/${item.id}`)
 .then(response => response.json())
 .then(data => {
   like_counts.innerHTML=data.likes
-  if (btn_txt==='like'){item.innerText='unlike'}
+  if (child_p.innerHTML==='like'){child_p.innerHTML='unlike'}
 
-  else if (btn_txt==='unlike')  {
-  item.innerText= 'like';
+  else if (child_p.innerHTML==='unlike')  {
+  child_p.innerHTML= 'like';
+
  }
 
   else{
-  item.innerText='like';
+  child_p.innerHTML='like';
+
   }
 
 
